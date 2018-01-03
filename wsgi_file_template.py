@@ -22,7 +22,9 @@ def pyflakes_check(code):
 @bottle.route('/', method='POST')
 def hello_world():
     code = bottle.request.forms.get('code')
-    bottle.response.headers['Access-Control-Allow-Origin'] = 'https://www.pythonanywhere.com'
+    origin = bottle.request.headers.get('Origin', '')
+    if origin.startswith("https://www.pythonanywhere."):
+        bottle.response.headers['Access-Control-Allow-Origin'] = origin
     return dict(errors=pyflakes_check(code))
 
 application = bottle.default_app()
