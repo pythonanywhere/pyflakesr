@@ -19,15 +19,10 @@ def pyflakes_check(code):
     ]
 
 
-ALLOWED_ORIGIN = "REPLACE_WITH_REAL_ALLOWED_ORIGIN"
-
 @bottle.route('/', method='POST')
 def check_code():
     code = bottle.request.forms.get('code')
-    origin = bottle.request.headers.get('Origin', '')
-    if origin == ALLOWED_ORIGIN:
-        bottle.response.headers['Access-Control-Allow-Origin'] = origin
-
+    bottle.response.headers['Access-Control-Allow-Origin'] = "REPLACE_WITH_REAL_ALLOWED_ORIGIN"
     return dict(errors=pyflakes_check(code))
 
 application = bottle.default_app()
