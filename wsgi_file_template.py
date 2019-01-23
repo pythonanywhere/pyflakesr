@@ -19,25 +19,14 @@ def pyflakes_check(code):
     ]
 
 
-ALLOWED_ORIGINS = [
-    "https://www.pythonanywhere.com",
-    "https://www.pythonanywhere.eu",
-    "https://eu.pythonanywhere.com",
-    "https://region.pythonanywhere.integration",
-    "https://www.pythonanywhere.conrad",
-    "https://foo.pythonanywhere.giles",
-    "https://www.pythonanywhere.glenn",
-    "https://www.pythonanywhere.fjl",
-]
+ALLOWED_ORIGIN = "REPLACE_WITH_REAL_ALLOWED_ORIGIN"
 
 @bottle.route('/', method='POST')
-def hello_world():
+def check_code():
     code = bottle.request.forms.get('code')
     origin = bottle.request.headers.get('Origin', '')
-    for allowed_origin in ALLOWED_ORIGINS:
-        if origin == allowed_origin:
-            bottle.response.headers['Access-Control-Allow-Origin'] = origin
-            break
+    if origin == ALLOWED_ORIGIN:
+        bottle.response.headers['Access-Control-Allow-Origin'] = origin
 
     return dict(errors=pyflakes_check(code))
 
