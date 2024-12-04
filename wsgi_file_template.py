@@ -1,7 +1,8 @@
 import _ast
 from pyflakes.checker import Checker
-import bottle
+from flask import Flask, Response, request
 
+application = Flask(__name__)
 
 def pyflakes_check(code):
     try:
@@ -19,10 +20,8 @@ def pyflakes_check(code):
     ]
 
 
-@bottle.route('/', method='POST')
+@application.route('/', methods=['POST'])
 def check_code():
-    code = bottle.request.forms.get('code')
-    bottle.response.headers['Access-Control-Allow-Origin'] = "REPLACE_WITH_REAL_ALLOWED_ORIGIN"
-    return dict(errors=pyflakes_check(code))
+    code = request.form.get('code')
+    return {"errors": pyflakes_check(code)}, 200, {'Access-Control-Allow-Origin':"REPLACE_WITH_REAL_ALLOWED_ORIGIN"}
 
-application = bottle.default_app()
